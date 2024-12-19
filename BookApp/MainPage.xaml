@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<base:AppPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:BookApp.ViewModels"
+             xmlns:base="clr-namespace:BookApp.Utils"
+             x:DataType="viewModel:MainPageViewModel"
              x:Class="BookApp.MainPage">
 
     <ScrollView>
@@ -14,7 +17,7 @@
                 SemanticProperties.Description="dot net bot in a hovercraft number nine" />
 
             <Label
-                Text="Hello, World!"
+                Text="{Binding Title}"
                 Style="{StaticResource Headline}"
                 SemanticProperties.HeadingLevel="Level1" />
 
@@ -33,4 +36,4 @@
         </VerticalStackLayout>
     </ScrollView>
 
-</ContentPage>
+</base:AppPage>

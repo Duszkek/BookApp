@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using BookApp.ViewModels;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls.Hosting;
+using Microsoft.Maui.Hosting;
 
 namespace BookApp;
 
@@ -9,6 +12,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .RegisterPages()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,5 +24,12 @@ public static class MauiProgram
 #endif
 
         return builder.Build();
+    }
+
+    private static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
+    {
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<MainPageViewModel>();
+        return builder;
     }
 }
