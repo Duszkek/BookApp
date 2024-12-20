@@ -3,13 +3,13 @@
     x:Class="BookApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:BookApp"
+    xmlns:local="clr-namespace:BookApp.Views"
     Shell.FlyoutBehavior="Flyout"
     Title="BookApp">
 
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate local:LoginView}"
         Route="MainPage" />
 
 </Shell>

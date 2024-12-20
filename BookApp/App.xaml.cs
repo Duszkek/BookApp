@@ -1,5 +1,6 @@
 ﻿using BookApp.Enums;
 using BookApp.Utils;
+using BookApp.Views;
 
 namespace BookApp;
 
@@ -13,13 +14,13 @@ public partial class App : CurrentApplication
         
         Intent intent = new Intent();
         intent.AddValue(IntentName.Test, "test title from intent :D");
-        MainPage = new NavigationPage(new MainPage(intent));
+        MainPage = new NavigationPage(new LoginView(intent));
         (MainPage as NavigationPage).BarBackgroundColor = Colors.Chocolate;
         (MainPage as NavigationPage).BarTextColor = Colors.DarkGray;
     }
 
     private void RegisterRoutes()
     {
-        NavigationManager.Register(NavigationWizardStep.Main, typeof(MainPage));
+        NavigationManager.Register(NavigationWizardStep.Main, typeof(LoginView));
     }
 }

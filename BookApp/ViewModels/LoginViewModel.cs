@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookApp.ViewModels;
 
-public partial class MainPageViewModel
+public partial class LoginViewModel
     : ObservableObject
 {
     #region Members
@@ -21,7 +21,7 @@ public partial class MainPageViewModel
     
     #region Ctor
 
-    public MainPageViewModel(Intent intent)
+    public LoginViewModel(Intent intent)
     {
         Intent = intent;
         Title = intent.GetValue<string>(IntentName.Test);

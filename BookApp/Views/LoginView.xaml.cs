@@ -2,13 +2,13 @@
 using BookApp.Utils;
 using BookApp.ViewModels;
 
-namespace BookApp;
+namespace BookApp.Views;
 
-public partial class MainPage : AppPage
+public partial class LoginView : AppPage
 {
     #region Members
     
-    private readonly MainPageViewModel ViewModel;
+    private readonly LoginViewModel ViewModel;
     
     #endregion
     
@@ -23,11 +23,11 @@ public partial class MainPage : AppPage
     
     int count = 0;
 
-    public MainPage(Intent intent)
+    public LoginView(Intent intent)
         : base(intent)
     {
         InitializeComponent();
-        BindingContext = ViewModel = new MainPageViewModel(intent);
+        BindingContext = ViewModel = new LoginViewModel(intent);
     }
 
     private void OnCounterClicked(object sender, EventArgs e)

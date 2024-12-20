@@ -1,4 +1,5 @@
 ﻿using BookApp.ViewModels;
+using BookApp.Views;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
@@ -28,8 +29,8 @@ public static class MauiProgram
 
     private static MauiAppBuilder RegisterPages(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<MainPage>();
-        builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddSingleton<LoginView>();
+        builder.Services.AddSingleton<LoginViewModel>();
         return builder;
     }
 }

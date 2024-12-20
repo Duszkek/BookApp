@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:BookApp.ViewModels"
              xmlns:base="clr-namespace:BookApp.Utils"
-             x:DataType="viewModel:MainPageViewModel"
-             x:Class="BookApp.MainPage">
+             x:DataType="viewModel:LoginViewModel"
+             x:Class="BookApp.Views.LoginView">
 
     <ScrollView>
         <VerticalStackLayout
