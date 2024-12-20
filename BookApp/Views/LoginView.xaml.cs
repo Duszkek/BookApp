@@ -16,7 +16,7 @@ public partial class LoginView : AppPage
     
     public override PageName Name
     {
-        get { return PageName.Main; }
+        get { return PageName.Login; }
     }
     
     #endregion
