@@ -24,7 +24,7 @@ public partial class LoginViewModel
     public LoginViewModel(Intent intent)
     {
         Intent = intent;
-        Title = intent.GetValue<string>(IntentName.Test);
+        Title = intent.GetValue<string>(IntentName.Main);
     }
     
     #endregion
@@ -33,7 +33,7 @@ public partial class LoginViewModel
 
     public async void OnButtonClicked()
     {
-        ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.Main);
+        ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.Login);
     }
     
     #endregion

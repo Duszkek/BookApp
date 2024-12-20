@@ -13,7 +13,7 @@ public partial class App : CurrentApplication
         RegisterRoutes();
         
         Intent intent = new Intent();
-        intent.AddValue(IntentName.Test, "test title from intent :D");
+        intent.AddValue(IntentName.Main, "test title from intent :D");
         MainPage = new NavigationPage(new LoginView(intent));
         (MainPage as NavigationPage).BarBackgroundColor = Colors.Chocolate;
         (MainPage as NavigationPage).BarTextColor = Colors.DarkGray;
@@ -21,6 +21,6 @@ public partial class App : CurrentApplication
 
     private void RegisterRoutes()
     {
-        NavigationManager.Register(NavigationWizardStep.Main, typeof(LoginView));
+        NavigationManager.Register(NavigationWizardStep.Login, typeof(LoginView));
     }
 }
