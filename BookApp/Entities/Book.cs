@@ -11,10 +11,10 @@ public class Book
     
     public string ApiId { get; set; } 
     public string Title { get; set; }
-    public string Authors { get; set; }
-    public string Description { get; set; }
-    public string PublishedDate { get; set; }
-    public string Thumbnail { get; set; }
-    public int PageCount { get; set; }
+    public string? Authors { get; set; }
+    public string? Description { get; set; }
+    public string? PublishedDate { get; set; }
+    public string? Thumbnail { get; set; }
+    public int? PageCount { get; set; }
     public ICollection<UserReadBooks> UserReadBooks { get; set; }
 }

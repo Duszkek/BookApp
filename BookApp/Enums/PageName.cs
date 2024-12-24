@@ -6,4 +6,5 @@ public enum PageName
     Login,
     AddUser,
     SelectBookListType,
+    SearchBooksList,
 }

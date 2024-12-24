@@ -32,16 +32,23 @@ public partial class SelectBookListTypeViewModel
     {
         Intent = intent;
         Title = $"Welcome {MauiProgram.CurrentUser.Username}!";
-        BookCounterLabel = $"Books read: {MauiProgram.CurrentUser.BooksCount}";
     }
     
     #endregion
     
     #region Methods
+
+    public void Refresh()
+    {
+        BookCounterLabel = $"Books read: {MauiProgram.CurrentUser.BooksCount}";
+    }
+    
+    #region Relay Commands
     
     [RelayCommand]
     private async Task GoToSearchBooks()
     {
+        await ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.SearchBooksList);
     }
     
     [RelayCommand]
@@ -55,6 +62,8 @@ public partial class SelectBookListTypeViewModel
         MauiProgram.CurrentUser = null;
         await ApplicationNavigator.GoBack();
     }
+    
+    #endregion
     
     #endregion
 }

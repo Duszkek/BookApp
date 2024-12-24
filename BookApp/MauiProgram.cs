@@ -1,11 +1,9 @@
 ﻿using BookApp.Database;
 using BookApp.Models;
 using BookApp.Services;
-using BookApp.Utils;
 using BookApp.ViewModels;
 using BookApp.Views;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookApp;
 
@@ -53,7 +51,9 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<SelectBookListTypeView>();
         builder.Services.AddSingleton<SelectBookListTypeViewModel>();
-
+        
+        builder.Services.AddSingleton<SearchBooksListView>();
+        builder.Services.AddSingleton<SearchBooksListViewModel>();
         return builder;
     }
 }

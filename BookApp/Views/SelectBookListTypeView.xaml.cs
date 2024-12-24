@@ -30,4 +30,13 @@ public partial class SelectBookListTypeView
     }
     
     #endregion
+    
+    #region Methods
+    
+    protected override async void OnAppearing()
+    {
+        ViewModel.Refresh();
+    }
+    
+    #endregion
 }

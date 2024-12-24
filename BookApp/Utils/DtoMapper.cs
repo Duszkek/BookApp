@@ -1,7 +1,5 @@
 using AutoMapper;
-using System.Text;
 using BookApp.DTO;
-using BookApp.Entities;
 using BookApp.Models;
 
 namespace BookApp.Utils;
@@ -38,9 +36,8 @@ public class DTOMapper
                     : "Unknown"))
                 .ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(src => src.VolumeInfo.PublishedDate))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.VolumeInfo.Description))
-                .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(src => src.VolumeInfo.ImageLinks != null 
-                    ? src.VolumeInfo.ImageLinks.Thumbnail 
-                    : string.Empty))
+                .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(src => EnsureHttps(src.VolumeInfo.ImageLinks.Thumbnail)))
+                .ForMember(dest => dest.SmallThumbnail, opt => opt.MapFrom(src => EnsureHttps(src.VolumeInfo.ImageLinks.SmallThumbnail)))
                 .ForMember(dest => dest.PageCount, opt => opt.MapFrom(src => src.VolumeInfo.PageCount))
                 .ForMember(dest => dest.IsSaved, opt => opt.MapFrom(src => false));
         });
@@ -109,6 +106,14 @@ public class DTOMapper
         }
 
         return new List<TResult>();
+    }
+    
+    private string EnsureHttps(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+            return string.Empty;
+
+        return url.StartsWith("http://") ? url.Replace("http://", "https://") : url;
     }
 
     #endregion

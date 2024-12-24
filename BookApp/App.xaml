@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Resources/Styles/MainTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <converters:BoolToSaveStatusConverter x:Key="BoolToSaveStatusConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </base:CurrentApplication>

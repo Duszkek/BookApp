@@ -1,20 +1,44 @@
 using BookApp.Entities;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BookApp.Models;
 
-public class BookModel
+public partial class BookModel
+    : ObservableObject
 {
     #region Properties
-    
-    public int? LocalId { get; set; }
-    public string ApiId { get; set; } 
-    public string Title { get; set; }
-    public string Authors { get; set; }
-    public string PublishedDate { get; set; }
-    public string Description { get; set; }
-    public string Thumbnail { get; set; }
-    public int PageCount { get; set; } 
-    public bool IsSaved => LocalId != null;
+
+    [ObservableProperty]
+    private int? localId;
+
+    [ObservableProperty] 
+    private string apiId;
+
+    [ObservableProperty]
+    private string title;
+
+    [ObservableProperty] 
+    private string authors;
+
+    [ObservableProperty] 
+    private string publishedDate;
+
+    [ObservableProperty] 
+    private string description;
+
+    [ObservableProperty] 
+    private string thumbnail;
+
+    [ObservableProperty] 
+    private string smallThumbnail;
+
+    [ObservableProperty] 
+    private int? pageCount;
+
+    [ObservableProperty] 
+    private bool isSaved;
+    public bool HasThumbnailImage => !string.IsNullOrEmpty(Thumbnail);
+    public bool HasSmallThumbnailImage => !string.IsNullOrEmpty(SmallThumbnail);
 
     #endregion
     
@@ -31,11 +55,12 @@ public class BookModel
         LocalId = book.IdBook;
         ApiId = book.ApiId;
         Title = book.Title;
-        Authors = book.Authors;
-        PublishedDate = book.PublishedDate;
-        Description = book.Description;
-        Thumbnail = book.Thumbnail;
+        Authors = book.Authors ?? string.Empty;
+        PublishedDate = book.PublishedDate ?? string.Empty;
+        Description = book.Description ?? string.Empty;
+        Thumbnail = book.Thumbnail ?? string.Empty;
         PageCount = book.PageCount;
+        IsSaved = true;
     }
     
     #endregion
