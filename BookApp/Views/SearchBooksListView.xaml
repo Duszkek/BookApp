@@ -30,6 +30,7 @@
             <!-- Author Search -->
             <Border Style="{StaticResource InputBorderStyle}" Grid.Row="1" Grid.Column="0"  Margin="0, 0, 20, 0">
                 <Entry
+                    Completed="Entry_OnCompleted"
                     Placeholder="Search by author"
                     Text="{Binding AuthorQuery}"
                     Style="{StaticResource InputFieldStyle}" />

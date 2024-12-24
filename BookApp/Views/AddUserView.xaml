@@ -23,6 +23,7 @@
             <!-- Username Input -->
             <Border Style="{StaticResource InputBorderStyle}">
                 <Entry
+                    Completed="Entry_OnCompleted"
                     Placeholder="Enter username"
                     Text="{Binding Username}"
                     Style="{StaticResource InputFieldStyle}" />

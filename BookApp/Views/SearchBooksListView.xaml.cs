@@ -47,4 +47,12 @@ public partial class SearchBooksListView
     }
     
     #endregion
+
+    private void Entry_OnCompleted(object? sender, EventArgs e)
+    {
+        if (sender is Entry entry)
+        {
+            entry.Unfocus();
+        }
+    }
 }
