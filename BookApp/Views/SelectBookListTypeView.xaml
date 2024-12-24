@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:AppPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:viewModel="clr-namespace:BookApp.ViewModels"
+              xmlns:base="clr-namespace:BookApp.Base"
+              x:DataType="viewModel:SelectBookListTypeViewModel"
+              x:Class="BookApp.Views.SelectBookListTypeView"
+              BackgroundColor="{StaticResource BackgroundColor}">
+
+    <Grid Padding="20" RowDefinitions="Auto,*,Auto">
+        
+        <!-- Page Header -->
+        <Label
+            Grid.Row="0"
+            Text="{Binding Title}"
+            Style="{StaticResource MainHeaderStyle}"/>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="0, 20,0 , 20" VerticalOptions="Center" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20" HorizontalOptions="Center">
+            
+            <!-- Search Books Button -->
+            <Border Grid.Row="0" Style="{StaticResource InputBorderStyle}" WidthRequest="200" HeightRequest="200">
+                <Grid RowDefinitions="Auto, Auto" VerticalOptions="Center">
+                    <Image Grid.Row="0" Source="web_book_icon.svg" WidthRequest="80" HeightRequest="80" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Label
+                        Grid.Row="1"
+                        Text="Search for books"
+                        Style="{StaticResource SelectListTypeLabelStyle}"/>
+                </Grid>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToSearchBooksCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+            <!-- Saved Books Button -->
+            <Border Grid.Row="1" Style="{StaticResource InputBorderStyle}" WidthRequest="200" HeightRequest="200">
+                <Grid RowDefinitions="Auto, Auto, Auto" VerticalOptions="Center">
+                    <Image Grid.Row="0" Source="open_book_icon.svg" WidthRequest="80" HeightRequest="80" HorizontalOptions="Center" VerticalOptions="Center" />
+                    <Label
+                        Grid.Row="1"
+                        Text="Read books list"
+                        Style="{StaticResource SelectListTypeLabelStyle}"/>
+                    
+                    <Label
+                        Grid.Row="2"
+                        Text="{Binding BookCounterLabel}"
+                        Style="{StaticResource SelectListTypeSecondaryLabelStyle}"/>
+                </Grid>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoToSavedBooksCommand}" />
+                </Border.GestureRecognizers>
+            </Border>
+
+        </Grid>
+
+        <!-- Logout Button -->
+        <Button
+            Grid.Row="2"
+            Text="Logout"
+            Command="{Binding LogoutCommand}"
+            Style="{StaticResource DeleteButtonStyle}"
+            HorizontalOptions="Fill"
+            VerticalOptions="End" />
+    </Grid>
+</base:AppPage>

@@ -26,6 +26,19 @@ public partial class LoginView
         InitializeComponent();
         BindingContext = ViewModel = new LoginViewModel(intent);
     }
+
+    private async void UserListView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection?.Count > 0)
+        {
+            await ViewModel?.ItemTapped(e.CurrentSelection.FirstOrDefault());
+        }
+
+        if (sender is CollectionView userCollectionView)
+        {
+            userCollectionView.SelectedItem = null;
+        }
+    }
     
     protected override async void OnAppearing()
     {
@@ -36,8 +49,6 @@ public partial class LoginView
             IsLoaded = true;
         }
 
-        ViewModel?.GetDataFromIntent();
-
-        ViewModel.DeleteMode = false; // force delete mode to off
+        ViewModel.Refresh();
     }
 }

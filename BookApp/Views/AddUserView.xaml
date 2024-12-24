@@ -13,19 +13,12 @@
             <!-- Page Header -->
             <Label
                 Text="Add new user"
-                FontSize="28"
-                FontAttributes="Bold"
-                TextColor="#333333"
-                VerticalOptions="Center"
-                HorizontalOptions="Start"/>
+                Style="{StaticResource MainHeaderStyle}"/>
             
             <!-- Disclaimer Label -->
             <Label
                 Text="Create new user in order to use the app and manage user's read books"
-                HorizontalOptions="Center"
-                VerticalOptions="Center"
-                FontSize="18"
-                TextColor="Gray"/>
+                Style="{StaticResource DisclaimerStyle}"/>
             
             <!-- Username Input -->
             <Border Style="{StaticResource InputBorderStyle}">
@@ -41,8 +34,6 @@
             Grid.Row="1"
             Text="Save"
             Command="{Binding SaveUserCommand}"
-            Style="{StaticResource PrimaryButtonStyle}"
-            HorizontalOptions="Fill"
-            VerticalOptions="End" />
+            Style="{StaticResource PrimaryButtonStyle}"/>
     </Grid>
 </base:AppPage>

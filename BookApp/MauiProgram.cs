@@ -1,4 +1,5 @@
 ﻿using BookApp.Database;
+using BookApp.Models;
 using BookApp.Services;
 using BookApp.Utils;
 using BookApp.ViewModels;
@@ -13,6 +14,8 @@ public static class MauiProgram
     #region Properties
     
     public static DataProviderService DataProviderService { get; set; }
+    
+    public static UserModel CurrentUser { get; set; }
     
     #endregion
     public static MauiApp CreateMauiApp()
@@ -47,6 +50,9 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<AddUserView>();
         builder.Services.AddSingleton<AddUserViewModel>();
+        
+        builder.Services.AddSingleton<SelectBookListTypeView>();
+        builder.Services.AddSingleton<SelectBookListTypeViewModel>();
 
         return builder;
     }

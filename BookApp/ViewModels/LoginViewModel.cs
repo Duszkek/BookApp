@@ -21,6 +21,8 @@ public partial class LoginViewModel
 
     public ObservableCollection<UserModel> UserList { get; set; } = [];
     
+    public UserModel? SelectedItem { get; set; }
+    
     #endregion
     
     #region Ctor
@@ -33,6 +35,13 @@ public partial class LoginViewModel
     #endregion
     
     #region Methods
+
+    public void Refresh()
+    {
+        GetDataFromIntent();
+        DeleteMode = false;
+        SelectedItem = null;
+    }
     
     public async Task LoadDataAsync()
     {
@@ -60,6 +69,15 @@ public partial class LoginViewModel
             
     }
     
+    public async Task ItemTapped(object selectedUser)
+    {
+        if (selectedUser is UserModel user && UserList.Contains(user) && !DeleteMode)
+        {
+            MauiProgram.CurrentUser = user;
+            await ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.SelectBookListType);
+        }
+    }
+    
     #region RelayCommands
     
     [RelayCommand]
@@ -69,18 +87,23 @@ public partial class LoginViewModel
     }
     
     [RelayCommand]
-    private async void OnAddUser()
+    private async Task OnAddUser()
     {
         await ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.AddUser);
     }
 
     [RelayCommand]
-    private async void DeleteUser(int idUser = 0)
+    private async Task DeleteUser(int idUser)
     {
         bool isDeleted = await MauiProgram.DataProviderService.DeleteUserAsync(idUser);
         if (isDeleted)
         {
-            UserModel deletedUser = UserList.FirstOrDefault(u => u.UserId == idUser);
+            UserModel? deletedUser = UserList.FirstOrDefault(u => u.UserId == idUser);
+            if (deletedUser == null)
+            {
+                throw new NullReferenceException(nameof(deletedUser));
+            }
+            
             UserList.Remove(deletedUser);
         
             OnPropertyChanged(nameof(UserList));
