@@ -163,10 +163,18 @@ public class DataProviderService
     
     #region Get
 
-    public async Task<bool> CheckIfBookIsSaved(string bookApiId)
+    public async Task<bool> CheckIfBookIsSavedForUser(int idUser, string bookApiId)
     {
-        bool bookExists = DbContext.Books.Any(x => x.ApiId == bookApiId);
-        return bookExists;
+        Book? book = DbContext.Books.FirstOrDefault(x => x.ApiId == bookApiId);
+
+        if (book is null)
+        {
+            return false;
+        }
+        
+        bool bookIsAssigned = DbContext.UserReadBooks.Any(x => x.UserId == idUser && x.BookId == book.IdBook);
+
+        return bookIsAssigned;
     }
 
     public async Task<List<UserModel>> GetUserModelListAsync()

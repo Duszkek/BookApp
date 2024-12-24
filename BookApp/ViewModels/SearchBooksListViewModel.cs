@@ -102,7 +102,7 @@ public partial class SearchBooksListViewModel
         BooksFoundCounter = apiResponseStruct.ItemsFound;
         foreach (BookModel book in apiResponseStruct.Books)
         {
-            if (await MauiProgram.DataProviderService.CheckIfBookIsSaved(book.ApiId))
+            if (await MauiProgram.DataProviderService.CheckIfBookIsSavedForUser(MauiProgram.CurrentUser.UserId, book.ApiId))
             {
                 book.IsSaved = true;
             }
@@ -140,6 +140,10 @@ public partial class SearchBooksListViewModel
         
         foreach (BookModel book in apiResponseStruct.Books)
         {
+            if (await MauiProgram.DataProviderService.CheckIfBookIsSavedForUser(MauiProgram.CurrentUser.UserId, book.ApiId))
+            {
+                book.IsSaved = true;
+            }
             BookList.Add(book);
         }
         

@@ -60,7 +60,7 @@ public partial class BookModel
         Description = book.Description ?? string.Empty;
         Thumbnail = book.Thumbnail ?? string.Empty;
         PageCount = book.PageCount;
-        IsSaved = true;
+        IsSaved = false;
     }
     
     #endregion
