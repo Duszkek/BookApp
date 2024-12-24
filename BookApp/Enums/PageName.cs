@@ -4,4 +4,5 @@ public enum PageName
 {
     NoName = 0,
     Login,
+    AddUser,
 }

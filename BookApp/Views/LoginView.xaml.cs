@@ -1,10 +1,12 @@
-﻿using BookApp.Enums;
+﻿using BookApp.Base;
+using BookApp.Enums;
 using BookApp.Utils;
 using BookApp.ViewModels;
 
 namespace BookApp.Views;
 
-public partial class LoginView : AppPage
+public partial class LoginView
+    : AppPage
 {
     #region Members
     
@@ -14,14 +16,9 @@ public partial class LoginView : AppPage
     
     #region Properties
     
-    public override PageName Name
-    {
-        get { return PageName.Login; }
-    }
-    
+    public override PageName Name => PageName.Login;
+
     #endregion
-    
-    int count = 0;
 
     public LoginView(Intent intent)
         : base(intent)
@@ -29,18 +26,18 @@ public partial class LoginView : AppPage
         InitializeComponent();
         BindingContext = ViewModel = new LoginViewModel(intent);
     }
-
-    private void OnCounterClicked(object sender, EventArgs e)
+    
+    protected override async void OnAppearing()
     {
-        count++;
+        if (!IsLoaded)
+        {
+            base.OnAppearing();
+            await ViewModel?.LoadDataAsync();
+            IsLoaded = true;
+        }
 
-        if (count == 1)
-            CounterBtn.Text = $"Clicked {count} time";
-        else
-            CounterBtn.Text = $"Clicked {count} times";
+        ViewModel?.GetDataFromIntent();
 
-        SemanticScreenReader.Announce(CounterBtn.Text);
-
-        ViewModel.OnButtonClicked();
+        ViewModel.DeleteMode = false; // force delete mode to off
     }
 }

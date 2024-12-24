@@ -19,7 +19,6 @@ public class CurrentApplication : Application
     {
         get
         {
-            // apparently in maui you can also do single page apps :) just like in blazor hybrid
             if (Current.MainPage is NavigationPage navigationPage)
             {
                 return navigationPage.Navigation;

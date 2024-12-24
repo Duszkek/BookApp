@@ -89,12 +89,46 @@ public class Intent
             return defaultValue;
         }
     }
+    
+    public T GetAndPopValue<T>(IntentName name, T defaultValue = default(T))
+    {
+        lock (Lock)
+        {
+            if (ContentDict.ContainsKey(name))
+            {
+                object value = ContentDict[name];
+                T ret;
+
+                try
+                {
+                    ret = (T)value;
+                }
+                catch
+                {
+                    return defaultValue;
+                }
+
+                ContentDict.Remove(name);
+                return ret;
+            }
+
+            return defaultValue;
+        }
+    }
 
     public void DeleteValue(IntentName name)
     {
         if (ContentDict.ContainsKey(name))
         {
             ContentDict.Remove(name);
+        }
+    }
+    
+    public bool HasValue(IntentName name)
+    {
+        lock (Lock)
+        {
+            return ContentDict.ContainsKey(name);
         }
     }
     

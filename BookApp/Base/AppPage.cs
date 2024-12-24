@@ -1,7 +1,7 @@
 using BookApp.Enums;
-using Microsoft.Maui.Controls;
+using BookApp.Utils;
 
-namespace BookApp.Utils;
+namespace BookApp.Base;
 
 public abstract class AppPage
     : ContentPage
@@ -9,8 +9,8 @@ public abstract class AppPage
     #region Properties
 
     public abstract PageName Name { get; }
-
     protected Intent Intent { get; private set; }
+    protected new bool IsLoaded { get; set; }
 
     #endregion
 
@@ -21,5 +21,5 @@ public abstract class AppPage
         Intent = intent;
     }
 
-#endregion
+    #endregion
 }

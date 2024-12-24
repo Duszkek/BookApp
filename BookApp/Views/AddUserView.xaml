@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:AppPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:viewModel="clr-namespace:BookApp.ViewModels"
+              xmlns:base="clr-namespace:BookApp.Base"
+              x:DataType="viewModel:AddUserViewModel"
+              x:Class="BookApp.Views.AddUserView"
+              BackgroundColor="{StaticResource BackgroundColor}">
+
+    <Grid Padding="20" RowDefinitions="*,Auto">
+        
+        <VerticalStackLayout Grid.Row="0" Spacing="20">
+            <!-- Page Header -->
+            <Label
+                Text="Add new user"
+                FontSize="28"
+                FontAttributes="Bold"
+                TextColor="#333333"
+                VerticalOptions="Center"
+                HorizontalOptions="Start"/>
+            
+            <!-- Disclaimer Label -->
+            <Label
+                Text="Create new user in order to use the app and manage user's read books"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                FontSize="18"
+                TextColor="Gray"/>
+            
+            <!-- Username Input -->
+            <Border Style="{StaticResource InputBorderStyle}">
+                <Entry
+                    Placeholder="Enter username"
+                    Text="{Binding Username}"
+                    Style="{StaticResource InputFieldStyle}" />
+            </Border>
+        </VerticalStackLayout>
+
+        <!-- Save Button -->
+        <Button
+            Grid.Row="1"
+            Text="Save"
+            Command="{Binding SaveUserCommand}"
+            Style="{StaticResource PrimaryButtonStyle}"
+            HorizontalOptions="Fill"
+            VerticalOptions="End" />
+    </Grid>
+</base:AppPage>

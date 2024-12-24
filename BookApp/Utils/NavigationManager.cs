@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using BookApp.Base;
 using BookApp.Enums;
 using BookApp.Extensions;
 

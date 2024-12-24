@@ -3,13 +3,16 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:base="clr-namespace:BookApp.Utils"
                     xmlns:local="clr-namespace:BookApp"
+                    xmlns:converters="clr-namespace:BookApp.Converters"
                     x:Class="BookApp.App">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/MainTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <converters:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </base:CurrentApplication>

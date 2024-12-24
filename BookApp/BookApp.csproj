@@ -60,25 +60,39 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)"/>
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Interfaces\" />
-      <Folder Include="Models\" />
     </ItemGroup>
 
     <ItemGroup>
       <MauiXaml Update="Views\LoginView.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Update="Views\AddUserView.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
       <Compile Update="Views\LoginView.xaml.cs">
-        <DependentUpon>MainPage.xaml</DependentUpon>
+        <DependentUpon>LoginView.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\AddUserView.xaml.cs">
+        <DependentUpon>AddUserView.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

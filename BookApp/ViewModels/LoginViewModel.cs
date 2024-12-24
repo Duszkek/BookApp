@@ -1,22 +1,26 @@
+using System.Collections.ObjectModel;
 using BookApp.Enums;
+using BookApp.Models;
 using BookApp.Utils;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BookApp.ViewModels;
 
 public partial class LoginViewModel
     : ObservableObject
 {
-    #region Members
-
-    private Intent Intent { get; set; }
-
-    #endregion
-    
     #region Properties
+    
+    [ObservableProperty]
+    private bool deleteMode;
+    
+    private Intent Intent { get; }
 
-    [ObservableProperty] private string title;
+    public bool AnyUserIsVisible => UserList.Count > 0;
 
+    public ObservableCollection<UserModel> UserList { get; set; } = [];
+    
     #endregion
     
     #region Ctor
@@ -24,17 +28,72 @@ public partial class LoginViewModel
     public LoginViewModel(Intent intent)
     {
         Intent = intent;
-        Title = intent.GetValue<string>(IntentName.Main);
     }
     
     #endregion
     
     #region Methods
-
-    public async void OnButtonClicked()
+    
+    public async Task LoadDataAsync()
     {
-        ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.Login);
+        List<UserModel> availableUsers = await MauiProgram.DataProviderService.GetUserModelListAsync();
+        
+        UserList.Clear();
+        foreach (UserModel user in availableUsers)
+        {
+            UserList.Add(user);
+        }
+        
+        OnPropertyChanged(nameof(UserList));
+        OnPropertyChanged(nameof(AnyUserIsVisible));
     }
+
+    public void GetDataFromIntent()
+    {
+        if (Intent.HasValue(IntentName.NewUser))
+        {
+            UserModel newUser = Intent.GetAndPopValue<UserModel>(IntentName.NewUser);
+            UserList.Add(newUser);
+            OnPropertyChanged(nameof(UserList));
+            OnPropertyChanged(nameof(AnyUserIsVisible));
+        }
+            
+    }
+    
+    #region RelayCommands
+    
+    [RelayCommand]
+    private void ToggleDeleteMode()
+    {
+        DeleteMode = !DeleteMode;
+    }
+    
+    [RelayCommand]
+    private async void OnAddUser()
+    {
+        await ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.AddUser);
+    }
+
+    [RelayCommand]
+    private async void DeleteUser(int idUser = 0)
+    {
+        bool isDeleted = await MauiProgram.DataProviderService.DeleteUserAsync(idUser);
+        if (isDeleted)
+        {
+            UserModel deletedUser = UserList.FirstOrDefault(u => u.UserId == idUser);
+            UserList.Remove(deletedUser);
+        
+            OnPropertyChanged(nameof(UserList));
+            OnPropertyChanged(nameof(AnyUserIsVisible));
+
+            if (UserList.Count == 0)
+            {
+                DeleteMode = false;
+            }
+        }
+    }
+    
+    #endregion
     
     #endregion
 }

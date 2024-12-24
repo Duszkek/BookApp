@@ -8,7 +8,7 @@
     Title="BookApp">
 
     <ShellContent
-        Title="Home"
+        Title="{Binding PageTitle}"
         ContentTemplate="{DataTemplate local:LoginView}"
         Route="MainPage" />
 

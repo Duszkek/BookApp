@@ -1,3 +1,4 @@
+using BookApp.Base;
 using BookApp.Enums;
 
 namespace BookApp.Utils;
@@ -11,7 +12,6 @@ public static class ApplicationNavigator
         
     }
     
-    //TO DO : Could do with some sort of fade or animation xd its too fast!
     public static async Task GoToPage(Intent intent, NavigationWizardStep? step)
     {
         try
@@ -42,7 +42,7 @@ public static class ApplicationNavigator
             Console.WriteLine(ex);
         }
     }
-
+    
     public static async Task GoBack(INavigation? navigation = null)
     {
         try
@@ -53,7 +53,7 @@ public static class ApplicationNavigator
             {
                 throw new NullReferenceException();
             }
-
+            
             await navigation.PopAsync();
         }
         catch (Exception ex)
