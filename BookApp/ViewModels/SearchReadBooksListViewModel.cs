@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace BookApp.ViewModels;
 
-public partial class SearchBooksListViewModel
+public partial class SearchReadBooksListViewModel
     : ObservableObject
 {
     #region Members
@@ -50,24 +50,63 @@ public partial class SearchBooksListViewModel
     [ObservableProperty]
     private bool counterIsVisible;
 
+    public int BooksReadCounter
+    {
+        get
+        {
+            return MauiProgram.CurrentUser.BooksCount;
+        }
+    }
+
     #endregion
     
     #region Ctor
 
-    public SearchBooksListViewModel(Intent intent)
+    public SearchReadBooksListViewModel(Intent intent)
     {
         Intent = intent;
-        EmptyListMessage = "Use the search function above to find your books";
+        EmptyListMessage = "You have no read books saved! In order to add new books go to the book list menu, find your books and save them!";
     }
     
     #endregion
     
     #region Methods
 
+    public async Task LoadDataAsync()
+    {
+        ListIsVisible = true;
+        OnPropertyChanged(nameof(ListIsVisible));
+        
+        IsLoading = true;
+        DbResponseStruct dbResponseStruct = await MauiProgram.DataProviderService.GetBookModelListForUserAsync(MauiProgram.CurrentUser.UserId);
+        if (dbResponseStruct.Books.Count < Constants.MaxApiResults)
+        {
+            StopLoadingData = true;
+        }
+        
+        CurrentPaginationIndex = dbResponseStruct.Books.Count;
+        BooksFoundCounter = MauiProgram.CurrentUser.BooksCount;
+        
+        foreach (BookModel book in dbResponseStruct.Books)
+        {
+            BookList.Add(book);
+        }
+
+        ListIsVisible = BookList.Count > 0;
+        IsLoading = false;
+        CounterIsVisible = ListIsVisible && !IsLoading;
+
+        OnPropertyChanged(nameof(BookList));
+        OnPropertyChanged(nameof(BooksFoundCounter));
+        OnPropertyChanged(nameof(CounterIsVisible));
+        OnPropertyChanged(nameof(AnyBookIsVisible));
+        OnPropertyChanged(nameof(ListIsVisible));
+    }
+    
     public void Refresh()
     {
         CurrentPaginationIndex = 0;
-        EmptyListMessage = "No elements found - change search parameters and try again";
+        EmptyListMessage = "No elements found - change search parameters and try again or add more books";
         BookList.Clear();
         CounterIsVisible = false;
     }
@@ -86,27 +125,23 @@ public partial class SearchBooksListViewModel
     [RelayCommand]
     public async Task PerformSearch()
     {
-        if (string.IsNullOrWhiteSpace(TitleQuery) && string.IsNullOrWhiteSpace(AuthorQuery))
-        {
-            return;
-        }
-        
         Refresh();
 
         ListIsVisible = true;
         OnPropertyChanged(nameof(ListIsVisible));
         
         IsLoading = true;
-        ApiResponseStruct apiResponseStruct = await MauiProgram.DataProviderService.SearchBooksAsync(TitleQuery, AuthorQuery, CurrentPaginationIndex);
-        CurrentPaginationIndex = apiResponseStruct.Books.Count;
-        BooksFoundCounter = apiResponseStruct.ItemsFound;
-        foreach (BookModel book in apiResponseStruct.Books)
+        
+        DbResponseStruct dbResponseStruct = await MauiProgram.DataProviderService.GetBookModelListForUserAsync(MauiProgram.CurrentUser.UserId, TitleQuery, AuthorQuery, CurrentPaginationIndex);
+        BooksFoundCounter = dbResponseStruct.ItemsFound;
+        if (dbResponseStruct.Books.Count < Constants.MaxApiResults)
         {
-            if (await MauiProgram.DataProviderService.CheckIfBookIsSavedForUser(MauiProgram.CurrentUser.UserId, book.ApiId))
-            {
-                book.IsSaved = true;
-            }
-            
+            StopLoadingData = true;
+        }
+        
+        CurrentPaginationIndex = dbResponseStruct.Books.Count;
+        foreach (BookModel book in dbResponseStruct.Books)
+        {
             BookList.Add(book);
         }
 
@@ -130,20 +165,18 @@ public partial class SearchBooksListViewModel
         }
         
         IsLoading = true;
-        ApiResponseStruct apiResponseStruct = await MauiProgram.DataProviderService.SearchBooksAsync(TitleQuery, AuthorQuery, CurrentPaginationIndex);
-        CurrentPaginationIndex += apiResponseStruct.Books.Count;
+        DbResponseStruct dbResponseStruct = await MauiProgram.DataProviderService.GetBookModelListForUserAsync(MauiProgram.CurrentUser.UserId, TitleQuery, AuthorQuery, CurrentPaginationIndex);
+        BooksFoundCounter = dbResponseStruct.ItemsFound;
 
-        if (apiResponseStruct.Books.Count < 40)
+        CurrentPaginationIndex += dbResponseStruct.Books.Count;
+
+        if (dbResponseStruct.Books.Count < Constants.MaxApiResults)
         {
             StopLoadingData = true;
         }
         
-        foreach (BookModel book in apiResponseStruct.Books)
+        foreach (BookModel book in dbResponseStruct.Books)
         {
-            if (await MauiProgram.DataProviderService.CheckIfBookIsSavedForUser(MauiProgram.CurrentUser.UserId, book.ApiId))
-            {
-                book.IsSaved = true;
-            }
             BookList.Add(book);
         }
         
@@ -153,23 +186,18 @@ public partial class SearchBooksListViewModel
     }
     
     [RelayCommand]
-    public async Task SwitchState(BookModel book)
+    public async Task DeleteBook(BookModel book)
     {
-        if (!book.IsSaved)
-        {
-            await MauiProgram.DataProviderService.SaveBookLocallyForUserAsync(MauiProgram.CurrentUser.UserId, book);
-            BookList[BookList.IndexOf(book)].IsSaved = true;
-            MauiProgram.CurrentUser.BooksCount += 1;
-            return;
-        }
-        
         await MauiProgram.DataProviderService.DeleteBookForUserAsync(MauiProgram.CurrentUser.UserId, book);
-        BookList[BookList.IndexOf(book)].IsSaved = false;
+        int bookIndex = BookList.IndexOf(book);
+        BookList[bookIndex].IsSaved = false;
         MauiProgram.CurrentUser.BooksCount -= 1;
-
+        BooksFoundCounter -= 1;
+        BookList.Remove(book);
         OnPropertyChanged(nameof(BookList));
+        OnPropertyChanged(nameof(BooksReadCounter));
     }
-    
+
     #endregion
     
     #endregion

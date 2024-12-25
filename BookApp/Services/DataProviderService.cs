@@ -64,7 +64,7 @@ public class DataProviderService
         {
             throw new NullReferenceException(nameof(user));
         }
-        
+    
         Book? book = DbContext.Books.FirstOrDefault(x => x.ApiId == bookModel.ApiId);
 
         if (book is null)
@@ -77,9 +77,10 @@ public class DataProviderService
                 Description = bookModel.Description,
                 PublishedDate = bookModel.PublishedDate,
                 Thumbnail = bookModel.Thumbnail,
+                SmallThumbnail = bookModel.SmallThumbnail,
                 PageCount = bookModel.PageCount,
             };
-        
+    
             DbContext.Books.Add(book);
             await DbContext.SaveChangesAsync();
         }
@@ -94,7 +95,7 @@ public class DataProviderService
                 UserId = user.IdUser,
                 BookId = book.IdBook
             };
-        
+    
             DbContext.UserReadBooks.Add(userReadBook);
             await DbContext.SaveChangesAsync();
         }
@@ -195,7 +196,42 @@ public class DataProviderService
         
         return userModels;
     }
-    
+
+    public async Task<DbResponseStruct> GetBookModelListForUserAsync(int idUser, string? bookTitle = null, string? bookAuthor = null, int paginationOffest = 0)
+    {
+        bool userExists = await DbContext.Users.AnyAsync(x => x.IdUser == idUser);
+
+        if (!userExists)
+        {
+            throw new ArgumentNullException($"No user found with id {idUser}");
+        }
+
+        int[] userBooksIds = await DbContext.UserReadBooks.Where(x => x.UserId == idUser).Select(x => x.BookId).ToArrayAsync();
+
+        if (userBooksIds.Length == 0)
+        {
+            return new DbResponseStruct() { ItemsFound = 0, Books = [] };
+        }
+
+        IQueryable<Book> userBooksQuery = DbContext.Books.Where(x => userBooksIds.Contains(x.IdBook));
+
+        if (!string.IsNullOrEmpty(bookTitle))
+        {
+            string pattern = $"%{bookTitle}%";
+            userBooksQuery = userBooksQuery.Where(x => EF.Functions.Like(x.Title, pattern));
+        }
+
+        if (!string.IsNullOrEmpty(bookAuthor))
+        {
+            string pattern = $"%{bookAuthor}%";
+            userBooksQuery = userBooksQuery.Where(x => EF.Functions.Like(x.Authors, pattern));
+        }
+        
+        List<Book> paginatedBooks = userBooksQuery.Skip(paginationOffest).Take(Constants.MaxApiResults).ToList();
+
+        return new DbResponseStruct() { ItemsFound = userBooksQuery.Count(), Books = paginatedBooks.Select(book => new BookModel(book)).ToList() };
+    }
+
     #endregion
     
     #region Google Books API
@@ -239,7 +275,6 @@ public class DataProviderService
             return new ApiResponseStruct() { ItemsFound = 0, Books = new List<BookModel>() };
         }
     }
-    
     
     #endregion
     public async Task InitializeDatabaseAsync()

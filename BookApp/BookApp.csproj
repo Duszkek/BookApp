@@ -90,6 +90,9 @@
       <MauiXaml Update="Views\SearchBooksListView.xaml">
         <SubType>Designer</SubType>
       </MauiXaml>
+      <MauiXaml Update="Views\SearchReadBooksListView.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
     </ItemGroup>
 
     <ItemGroup>
@@ -107,6 +110,10 @@
       </Compile>
       <Compile Update="Views\SearchBooksListView.xaml.cs">
         <DependentUpon>SearchBooksListView.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Views\SearchReadBooksListView.xaml.cs">
+        <DependentUpon>SearchReadBooksListView.xaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
     </ItemGroup>

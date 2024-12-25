@@ -5,35 +5,35 @@ using BookApp.ViewModels;
 
 namespace BookApp.Views;
 
-public partial class SearchBooksListView
+public partial class SearchReadBooksListView
     : AppPage
 {
     #region Members
     
-    private readonly SearchBooksListViewModel ViewModel;
+    private readonly SearchReadBooksListViewModel ViewModel;
     
     #endregion
     
     #region Properties
     
-    public override PageName Name => PageName.SearchBooksList;
+    public override PageName Name => PageName.SearchReadBooksList;
 
     #endregion
     
     #region Ctor
 
-    public SearchBooksListView(Intent intent)
+    public SearchReadBooksListView(Intent intent)
         : base(intent)
     {
         InitializeComponent();
-        BindingContext = ViewModel = new SearchBooksListViewModel(intent);
+        BindingContext = ViewModel = new SearchReadBooksListViewModel(intent);
     }
     
     #endregion
     
     #region Methods
 
-    private async void SearchBooksList_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private async void SearchReadBooksList_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         if (e.CurrentSelection?.Count > 0)
         {
@@ -43,6 +43,16 @@ public partial class SearchBooksListView
         if (sender is CollectionView userCollectionView)
         {
             userCollectionView.SelectedItem = null;
+        }
+    }
+    
+    protected override async void OnAppearing()
+    {
+        if (!IsLoaded)
+        {
+            base.OnAppearing();
+            await ViewModel?.LoadDataAsync();
+            IsLoaded = true;
         }
     }
     

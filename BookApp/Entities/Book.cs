@@ -15,6 +15,7 @@ public class Book
     public string? Description { get; set; }
     public string? PublishedDate { get; set; }
     public string? Thumbnail { get; set; }
+    public string? SmallThumbnail { get; set; }
     public int? PageCount { get; set; }
     public ICollection<UserReadBooks> UserReadBooks { get; set; }
 }

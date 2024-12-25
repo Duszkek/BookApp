@@ -7,4 +7,5 @@ public enum PageName
     AddUser,
     SelectBookListType,
     SearchBooksList,
+    SearchReadBooksList,
 }

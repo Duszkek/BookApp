@@ -7,5 +7,6 @@ public enum NavigationWizardStep
      AddUser,
      BookDetails,
      SelectBookListType,
+     SearchReadBooksList,
      SearchBooksList,
 }

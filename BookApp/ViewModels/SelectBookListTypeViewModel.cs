@@ -54,6 +54,7 @@ public partial class SelectBookListTypeViewModel
     [RelayCommand]
     private async Task GoToSavedBooks()
     {
+        await ApplicationNavigator.GoToPage(Intent, NavigationWizardStep.SearchReadBooksList);
     }
     
     [RelayCommand]

@@ -21,5 +21,6 @@ public partial class App : CurrentApplication
         NavigationManager.Register(NavigationWizardStep.AddUser, typeof(AddUserView));
         NavigationManager.Register(NavigationWizardStep.SelectBookListType, typeof(SelectBookListTypeView));
         NavigationManager.Register(NavigationWizardStep.SearchBooksList, typeof(SearchBooksListView));
+        NavigationManager.Register(NavigationWizardStep.SearchReadBooksList, typeof(SearchReadBooksListView));
     }
 }

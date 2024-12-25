@@ -54,6 +54,9 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<SearchBooksListView>();
         builder.Services.AddSingleton<SearchBooksListViewModel>();
+        
+        builder.Services.AddSingleton<SearchReadBooksListView>();
+        builder.Services.AddSingleton<SearchReadBooksListViewModel>();
         return builder;
     }
 }

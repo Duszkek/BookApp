@@ -1,0 +1,166 @@
+﻿<base:AppPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:viewModel="clr-namespace:BookApp.ViewModels"
+              xmlns:base="clr-namespace:BookApp.Base"
+              xmlns:models="clr-namespace:BookApp.Models"
+              x:DataType="viewModel:SearchReadBooksListViewModel"
+              x:Class="BookApp.Views.SearchReadBooksListView"
+              BackgroundColor="{StaticResource BackgroundColor}">
+
+    <Grid Padding="20">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Search Inputs -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Margin="10, 0, 0, 10">
+            <!-- Title Search -->
+            <Border Style="{StaticResource InputBorderStyle}" Grid.Row="0" Grid.Column="0" Margin="0, 0, 20, 10">
+                <Entry
+                    Placeholder="Search by title"
+                    Text="{Binding TitleQuery}"
+                    Style="{StaticResource InputFieldStyle}" />
+            </Border>
+
+            <!-- Author Search -->
+            <Border Style="{StaticResource InputBorderStyle}" Grid.Row="1" Grid.Column="0"  Margin="0, 0, 20, 0">
+                <Entry
+                    Completed="Entry_OnCompleted"
+                    Placeholder="Search by author"
+                    Text="{Binding AuthorQuery}"
+                    Style="{StaticResource InputFieldStyle}" />
+            </Border>
+
+            <!-- Search Button -->
+            <Button
+                Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
+                Text="Search"
+                Style="{StaticResource SearchButtonStyle}"
+                Command="{Binding PerformSearchCommand}"/>
+        </Grid>
+
+        <!-- Page Header -->
+        <Label
+            Grid.Row="1"
+            Text="Search read books"
+            Style="{StaticResource MainHeaderStyle}" />
+        
+        <!-- All User Books Counter -->
+        <Label
+            Grid.Row="2"
+            Style="{StaticResource ListCounterStyle}"
+            Text="{Binding BooksReadCounter, StringFormat='Books read: {0}'}"
+            IsVisible="{Binding CounterIsVisible}"/>
+        
+        <!-- Counter -->
+        <Label
+            Grid.Row="3"
+            Style="{StaticResource ListCounterStyle}"
+            Text="{Binding BooksFoundCounter, StringFormat='Books found: {0}'}"
+            IsVisible="{Binding CounterIsVisible}"/>
+
+        <!-- Book List -->
+        <CollectionView
+            Grid.Row="4"
+            x:Name="SearchReadBooksList"
+            ItemsSource="{Binding BookList}"
+            IsVisible="{Binding ListIsVisible}"
+            SelectionMode="Single"
+            SelectedItem = "{Binding SelectedItem}"
+            SelectionChanged="SearchReadBooksList_OnSelectionChanged"
+            RemainingItemsThreshold="5"
+            RemainingItemsThresholdReachedCommand="{Binding LoadMoreBooksCommand}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:BookModel">
+                    <Border Stroke="#E0E0E0" StrokeThickness="1" BackgroundColor="White" Padding="10" Margin="10">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="5">
+                            
+                            <!-- Thumbnail -->
+                            <Border Stroke="#E0E0E0" Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" StrokeThickness="1" BackgroundColor="White" Padding="10" WidthRequest="80" HeightRequest="120" Margin="10">
+                                <Grid WidthRequest="80" HeightRequest="120">
+                                    <Image
+                                        IsVisible="{Binding HasSmallThumbnailImage}"
+                                        Source="{Binding SmallThumbnail}"
+                                        WidthRequest="80" HeightRequest="120"
+                                        Aspect="AspectFill" />
+                                    <Label
+                                        Text="Preview unavailable"
+                                        Style="{StaticResource PhotoUnavailableLabelStyle}"
+                                        IsVisible="{Binding HasSmallThumbnailImage, Converter={StaticResource InverseBooleanConverter}}" />
+                                </Grid>
+                            </Border>
+                            
+                            <!-- Title -->
+                            <Label
+                                Grid.Row="0" Grid.Column="1"
+                                Text="{Binding Title}"
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                TextColor="#333333"
+                                LineBreakMode="TailTruncation" />
+                            
+                            <!-- Authors -->
+                            <Label
+                                Grid.Row="1" Grid.Column="1"
+                                Text="{Binding Authors}"
+                                FontSize="14"
+                                TextColor="#666666"
+                                LineBreakMode="TailTruncation" />
+                            
+                            <!-- Published Date -->
+                            <Label
+                                Grid.Row="2" Grid.Column="1"
+                                Text="{Binding PublishedDate}"
+                                FontSize="12"
+                                TextColor="Gray" />
+                            
+                            <!-- Delete Button -->
+                            <Button
+                                Grid.Row="1" Grid.Column="2"
+                                Text="{Binding IsSaved, Converter={StaticResource BoolToSaveStatusConverter}}"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:SearchReadBooksListViewModel}}, Path=DeleteBookCommand}"
+                                CommandParameter="{Binding .}"
+                                Style="{StaticResource ListElementButtonStyle}"/>
+                        </Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"></VisualState>
+                                <VisualState Name="Selected">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="{StaticResource ListElementBackgroundColor}"></Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- No Elements Found Message -->
+        <Label
+            Grid.Row="4"
+            Text="{Binding EmptyListMessage}"
+            IsVisible="{Binding ListIsVisible, Converter={StaticResource InverseBooleanConverter}}"
+            Style="{StaticResource DisclaimerStyle}"
+            FontAttributes="Italic" />
+
+
+        <!-- Loading Indicator -->
+        <ActivityIndicator
+            Grid.Row="5"
+            IsVisible="{Binding IsLoading}"
+            IsRunning="{Binding IsLoading}"
+            VerticalOptions="Center"
+            HorizontalOptions="Center" />
+    </Grid>
+</base:AppPage>

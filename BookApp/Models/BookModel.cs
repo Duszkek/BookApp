@@ -37,9 +37,11 @@ public partial class BookModel
 
     [ObservableProperty] 
     private bool isSaved;
-    public bool HasThumbnailImage => !string.IsNullOrEmpty(Thumbnail);
-    public bool HasSmallThumbnailImage => !string.IsNullOrEmpty(SmallThumbnail);
 
+    public bool HasThumbnailImage => !string.IsNullOrEmpty(Thumbnail);
+    
+    public bool HasSmallThumbnailImage => !string.IsNullOrEmpty(SmallThumbnail);
+    
     #endregion
     
     #region Ctor
@@ -59,8 +61,9 @@ public partial class BookModel
         PublishedDate = book.PublishedDate ?? string.Empty;
         Description = book.Description ?? string.Empty;
         Thumbnail = book.Thumbnail ?? string.Empty;
+        SmallThumbnail = book.SmallThumbnail ?? string.Empty;
         PageCount = book.PageCount;
-        IsSaved = false;
+        IsSaved = true;
     }
     
     #endregion
