@@ -33,7 +33,7 @@
     <Style x:Key="PrimaryButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
         <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
-        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="HorizontalOptions" Value="Fill" />
@@ -45,7 +45,7 @@
     <Style x:Key="DeleteButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
         <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
-        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Padding" Value="10" />
@@ -55,7 +55,7 @@
     <Style x:Key="SearchButtonStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource PrimaryColor}" />
         <Setter Property="TextColor" Value="{StaticResource ButtonTextColor}" />
-        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="HeightRequest" Value="80" />
@@ -75,7 +75,7 @@
     <Style x:Key="DeleteButtonCellStyle" TargetType="Button">
         <Setter Property="BackgroundColor" Value="{StaticResource ErrorColor}" />
         <Setter Property="TextColor" Value="White" />
-        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="FontSize" Value="10" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="WidthRequest" Value="60" />

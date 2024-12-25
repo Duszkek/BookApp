@@ -22,13 +22,14 @@
             <!-- Title Search -->
             <Border Style="{StaticResource InputBorderStyle}" Grid.Row="0" Grid.Column="0" Margin="0, 0, 20, 10">
                 <Entry
+                    Completed="Entry_OnCompleted"
                     Placeholder="Search by title"
                     Text="{Binding TitleQuery}"
                     Style="{StaticResource InputFieldStyle}" />
             </Border>
 
             <!-- Author Search -->
-            <Border Style="{StaticResource InputBorderStyle}" Grid.Row="1" Grid.Column="0"  Margin="0, 0, 20, 0">
+            <Border Style="{StaticResource InputBorderStyle}" Grid.Row="1" Grid.Column="0" Margin="0, 0, 20, 0">
                 <Entry
                     Completed="Entry_OnCompleted"
                     Placeholder="Search by author"
@@ -98,7 +99,7 @@
                                 FontSize="18"
                                 FontAttributes="Bold"
                                 TextColor="#333333"
-                                LineBreakMode="TailTruncation" />
+                                LineBreakMode="WordWrap" />
                             
                             <!-- Authors -->
                             <Label
@@ -106,7 +107,7 @@
                                 Text="{Binding Authors}"
                                 FontSize="14"
                                 TextColor="#666666"
-                                LineBreakMode="TailTruncation" />
+                                LineBreakMode="WordWrap" />
                             
                             <!-- Published Date -->
                             <Label
@@ -115,13 +116,18 @@
                                 FontSize="12"
                                 TextColor="Gray" />
                             
-                            <!-- Save/Unsave Button -->
+                            <!-- Read/Unread Button -->
                             <Button
-                                Grid.Row="1" Grid.Column="2"
+                                Grid.Row="0" Grid.Column="2"
                                 Text="{Binding IsSaved, Converter={StaticResource BoolToSaveStatusConverter}}"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:SearchBooksListViewModel}}, Path=SwitchStateCommand}"
                                 CommandParameter="{Binding .}"
-                                Style="{StaticResource ListElementButtonStyle}"/>
+                                Style="{StaticResource ListElementButtonStyle}"
+                                WidthRequest="80"
+                                HeightRequest="40"
+                                FontSize="12"
+                                HorizontalOptions="End"
+                                VerticalOptions="Start" />
                         </Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
@@ -145,7 +151,6 @@
             IsVisible="{Binding ListIsVisible, Converter={StaticResource InverseBooleanConverter}}"
             Style="{StaticResource DisclaimerStyle}"
             FontAttributes="Italic" />
-
 
         <!-- Loading Indicator -->
         <ActivityIndicator

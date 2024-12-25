@@ -23,6 +23,7 @@
             <!-- Title Search -->
             <Border Style="{StaticResource InputBorderStyle}" Grid.Row="0" Grid.Column="0" Margin="0, 0, 20, 10">
                 <Entry
+                    Completed="Entry_OnCompleted"
                     Placeholder="Search by title"
                     Text="{Binding TitleQuery}"
                     Style="{StaticResource InputFieldStyle}" />
@@ -42,7 +43,7 @@
                 Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
                 Text="Search"
                 Style="{StaticResource SearchButtonStyle}"
-                Command="{Binding PerformSearchCommand}"/>
+                Command="{Binding PerformSearchCommand}" />
         </Grid>
 
         <!-- Page Header -->
@@ -106,7 +107,7 @@
                                 FontSize="18"
                                 FontAttributes="Bold"
                                 TextColor="#333333"
-                                LineBreakMode="TailTruncation" />
+                                LineBreakMode="WordWrap" />
                             
                             <!-- Authors -->
                             <Label
@@ -114,7 +115,7 @@
                                 Text="{Binding Authors}"
                                 FontSize="14"
                                 TextColor="#666666"
-                                LineBreakMode="TailTruncation" />
+                                LineBreakMode="WordWrap" />
                             
                             <!-- Published Date -->
                             <Label
@@ -125,11 +126,16 @@
                             
                             <!-- Delete Button -->
                             <Button
-                                Grid.Row="1" Grid.Column="2"
-                                Text="{Binding IsSaved, Converter={StaticResource BoolToSaveStatusConverter}}"
+                                Grid.Row="0" Grid.Column="2"
+                                Text="Delete"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:SearchReadBooksListViewModel}}, Path=DeleteBookCommand}"
                                 CommandParameter="{Binding .}"
-                                Style="{StaticResource ListElementButtonStyle}"/>
+                                Style="{StaticResource DeleteButtonCellStyle}"
+                                WidthRequest="80"
+                                HeightRequest="40"
+                                FontSize="12"
+                                HorizontalOptions="End"
+                                VerticalOptions="Start" />
                         </Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
@@ -153,7 +159,6 @@
             IsVisible="{Binding ListIsVisible, Converter={StaticResource InverseBooleanConverter}}"
             Style="{StaticResource DisclaimerStyle}"
             FontAttributes="Italic" />
-
 
         <!-- Loading Indicator -->
         <ActivityIndicator
