@@ -5,6 +5,7 @@
               xmlns:models="clr-namespace:BookApp.Models"
               x:DataType="viewModel:SearchBooksListViewModel"
               x:Class="BookApp.Views.SearchBooksListView"
+              xmlns:res="clr-namespace:BookApp"
               BackgroundColor="{StaticResource BackgroundColor}">
 
     <Grid Padding="20">
@@ -23,7 +24,7 @@
             <Border Style="{StaticResource InputBorderStyle}" Grid.Row="0" Grid.Column="0" Margin="0, 0, 20, 10">
                 <Entry
                     Completed="Entry_OnCompleted"
-                    Placeholder="Search by title"
+                    Placeholder="{x:Static res:Strings.SearchByTitle}"
                     Text="{Binding TitleQuery}"
                     Style="{StaticResource InputFieldStyle}" />
             </Border>
@@ -32,7 +33,7 @@
             <Border Style="{StaticResource InputBorderStyle}" Grid.Row="1" Grid.Column="0" Margin="0, 0, 20, 0">
                 <Entry
                     Completed="Entry_OnCompleted"
-                    Placeholder="Search by author"
+                    Placeholder="{x:Static res:Strings.SearchByAuthor}"
                     Text="{Binding AuthorQuery}"
                     Style="{StaticResource InputFieldStyle}" />
             </Border>
@@ -40,7 +41,7 @@
             <!-- Search Button -->
             <Button
                 Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"
-                Text="Search"
+                Text="{x:Static res:Strings.Search}"
                 Style="{StaticResource SearchButtonStyle}"
                 Command="{Binding PerformSearchCommand}"/>
         </Grid>
@@ -48,14 +49,14 @@
         <!-- Page Header -->
         <Label
             Grid.Row="1"
-            Text="Search Books"
+            Text="{x:Static res:Strings.SearchBooks}"
             Style="{StaticResource MainHeaderStyle}" />
         
         <!-- Counter -->
         <Label
             Grid.Row="2"
             Style="{StaticResource ListCounterStyle}"
-            Text="{Binding BooksFoundCounter, StringFormat='Books found: {0}'}"
+            Text="{Binding BooksFoundCounter, StringFormat={x:Static res:Strings.BooksFoundCounterFormat}}"
             IsVisible="{Binding CounterIsVisible}"/>
 
         <!-- Book List -->
@@ -86,7 +87,7 @@
                                         WidthRequest="80" HeightRequest="120"
                                         Aspect="AspectFill" />
                                     <Label
-                                        Text="Preview unavailable"
+                                        Text="{x:Static res:Strings.PreviewUnavailable}"
                                         Style="{StaticResource PhotoUnavailableLabelStyle}"
                                         IsVisible="{Binding HasSmallThumbnailImage, Converter={StaticResource InverseBooleanConverter}}" />
                                 </Grid>

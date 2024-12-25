@@ -43,7 +43,7 @@ public partial class LoginView
         }
         else
         {
-            await DisplayAlert("No Internet", "Internet connection is not available. Please check your connection and try again.", "OK");
+            await DisplayAlert(Strings.NoInternet, Strings.InternetConnectionIsNotAvailableMessage, Strings.Ok);
         }
         
         if (sender is CollectionView userCollectionView)

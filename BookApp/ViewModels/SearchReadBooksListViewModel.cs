@@ -30,7 +30,7 @@ public partial class SearchReadBooksListViewModel
     public SearchReadBooksListViewModel(Intent intent)
         :base(intent)
     {
-        EmptyListMessage = "You have no read books saved! In order to add new books go to the book list menu, find your books and save them!";
+        EmptyListMessage = Strings.NoReadBooksSavedMessage;
     }
     
     #endregion
@@ -73,7 +73,7 @@ public partial class SearchReadBooksListViewModel
     public override void Refresh()
     {
         CurrentPaginationIndex = 0;
-        EmptyListMessage = "No elements found - change search parameters and try again or add more books";
+        EmptyListMessage = Strings.NoElementsFoundChangeParametersTryAgain;
         BookList.Clear();
         CounterIsVisible = false;
     }

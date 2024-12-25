@@ -43,7 +43,6 @@ public partial class AddUserViewModel
     {
         if (string.IsNullOrWhiteSpace(Username))
         {
-            Console.WriteLine("Username cannot be empty.");
             return;
         }
 

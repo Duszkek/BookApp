@@ -5,6 +5,7 @@
               xmlns:base="clr-namespace:BookApp.Base"
               x:DataType="viewModel:SelectBookListTypeViewModel"
               x:Class="BookApp.Views.SelectBookListTypeView"
+              xmlns:res="clr-namespace:BookApp"
               BackgroundColor="{StaticResource BackgroundColor}">
 
     <Grid Padding="20" RowDefinitions="Auto,*,Auto">
@@ -24,7 +25,7 @@
                     <Image Grid.Row="0" Source="web_book_icon.svg" WidthRequest="80" HeightRequest="80" HorizontalOptions="Center" VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
-                        Text="Search for books"
+                        Text="{x:Static res:Strings.SearchForBooks}"
                         Style="{StaticResource SelectListTypeLabelStyle}"/>
                 </Grid>
                 <Border.GestureRecognizers>
@@ -38,7 +39,7 @@
                     <Image Grid.Row="0" Source="open_book_icon.svg" WidthRequest="80" HeightRequest="80" HorizontalOptions="Center" VerticalOptions="Center" />
                     <Label
                         Grid.Row="1"
-                        Text="Read books list"
+                        Text="{x:Static res:Strings.ReadBooksList}"
                         Style="{StaticResource SelectListTypeLabelStyle}"/>
                     
                     <Label
@@ -56,7 +57,7 @@
         <!-- Logout Button -->
         <Button
             Grid.Row="2"
-            Text="Logout"
+            Text="{x:Static res:Strings.Logout}"
             Command="{Binding LogoutCommand}"
             Style="{StaticResource DeleteButtonStyle}"
             HorizontalOptions="Fill"

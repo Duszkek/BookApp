@@ -4,6 +4,7 @@
               xmlns:base="clr-namespace:BookApp.Base"
               x:DataType="viewModel:BookDetailsViewModel"
               x:Class="BookApp.Views.BookDetailsView"
+              xmlns:res="clr-namespace:BookApp"
               BackgroundColor="{StaticResource BackgroundColor}">
 
     <Grid Padding="20" RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="Auto, *">
@@ -11,7 +12,7 @@
         <!-- Page Header -->
         <Label
             Grid.Row="0" Grid.ColumnSpan="2"
-            Text="Book Details"
+            Text="{x:Static res:Strings.BookDetails}"
             Style="{StaticResource MainHeaderStyle}" />
         
         <!-- Book Data -->
@@ -26,7 +27,7 @@
                         IsVisible="{Binding BookModel.HasThumbnailImage}"
                         Aspect="AspectFit" />
                     <Label
-                        Text="Preview unavailable"
+                        Text="{x:Static res:Strings.PreviewUnavailable}"
                         Style="{StaticResource PhotoUnavailableLabelStyle}"
                         IsVisible="{Binding BookModel.HasThumbnailImage, Converter={StaticResource InverseBooleanConverter}}" />
                 </Grid>
@@ -36,7 +37,7 @@
             <Grid Grid.Row="0" Grid.Column="2" RowDefinitions="Auto, Auto">
             <Label
                 Grid.Row="1"
-                Text="Title"
+                Text="{x:Static res:Strings.Title}"
                 Style="{StaticResource SecondaryLabelStyle}" />
             <Label
                 Grid.Row="0"
@@ -49,7 +50,7 @@
             <Grid Grid.Row="1" Grid.Column="2" RowDefinitions="Auto, Auto">
             <Label
                 Grid.Row="1"
-                Text="Authors"
+                Text="{x:Static res:Strings.Authors}"
                 Style="{StaticResource SecondaryLabelStyle}" />
             <Label
                 Grid.Row="0"
@@ -61,7 +62,7 @@
             <Grid Grid.Row="2" Grid.Column="2" RowDefinitions="Auto, Auto">
             <Label
                 Grid.Row="1"
-                Text="Published Date"
+                Text="{x:Static res:Strings.PublishedDate}"
                 Style="{StaticResource SecondaryLabelStyle}" />
             <Label
                 Grid.Row="0"
@@ -73,7 +74,7 @@
             <Grid Grid.Row="3" Grid.Column="2" RowDefinitions="Auto, Auto">
             <Label
                 Grid.Row="1"
-                Text="Page Count"
+                Text="{x:Static res:Strings.PageCount}"
                 Style="{StaticResource SecondaryLabelStyle}" />
             <Label
                 Grid.Row="0"
@@ -86,7 +87,7 @@
         <Label
             Grid.Row="2"
             Grid.Column="1"
-            Text="Description"
+            Text="{x:Static res:Strings.Description}"
             Style="{StaticResource SecondaryLabelStyle}"/>
         <ScrollView Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0, 0">
             <Label
@@ -100,7 +101,7 @@
             <Button
                 Grid.Row="0"
                 IsVisible="{Binding StatusChanged}"
-                Text="Save"
+                Text="{x:Static res:Strings.Save}"
                 Command="{Binding SaveCommand}"
                 Style="{StaticResource PrimaryButtonStyle}" />
             <Button

@@ -8,17 +8,17 @@ namespace BookApp.Converters
         {
             if (value is bool isSaved)
             {
-                return isSaved ? "Read" : "Unread";
+                return isSaved ? Strings.Read : Strings.Unread;
             }
 
-            return "Unread";
+            return Strings.Read;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is string s)
             {
-                return String.Compare(s, "Saved", StringComparison.OrdinalIgnoreCase) == 0;
+                return String.Compare(s, Strings.Read, StringComparison.OrdinalIgnoreCase) == 0;
             }
 
             return false;        

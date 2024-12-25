@@ -18,7 +18,7 @@ public partial class SearchBooksListViewModel
     public SearchBooksListViewModel(Intent intent)
         : base(intent)
     {
-        EmptyListMessage = "Use the search function above to find your books";
+        EmptyListMessage = Strings.UseTheSearchFunction;
     }
     
     #endregion
@@ -42,7 +42,7 @@ public partial class SearchBooksListViewModel
     public override void Refresh()
     {
         CurrentPaginationIndex = 0;
-        EmptyListMessage = "No elements found - change search parameters and try again";
+        EmptyListMessage = Strings.NoElementsFoundChangeParametersTryAgain;
         BookList.Clear();
         CounterIsVisible = false;
     }
@@ -128,7 +128,7 @@ public partial class SearchBooksListViewModel
         ApiResponseStruct apiResponseStruct = await MauiProgram.DataProviderService.SearchBooksAsync(TitleQuery.Trim(), AuthorQuery.Trim(), CurrentPaginationIndex);
         CurrentPaginationIndex += apiResponseStruct.Books.Count;
 
-        if (apiResponseStruct.Books.Count < 40)
+        if (apiResponseStruct.Books.Count < Constants.MaxApiResults)
         {
             StopLoadingData = true;
         }

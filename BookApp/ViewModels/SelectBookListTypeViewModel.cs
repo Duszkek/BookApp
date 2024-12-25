@@ -31,7 +31,7 @@ public partial class SelectBookListTypeViewModel
     public SelectBookListTypeViewModel(Intent intent)
     {
         Intent = intent;
-        Title = $"Welcome {MauiProgram.CurrentUser.Username}!";
+        Title = String.Format(Strings.WelcomeUserFormat, MauiProgram.CurrentUser.Username);
     }
     
     #endregion
@@ -40,7 +40,7 @@ public partial class SelectBookListTypeViewModel
 
     public void Refresh()
     {
-        BookCounterLabel = $"Books read: {MauiProgram.CurrentUser.BooksCount}";
+        BookCounterLabel = $"{Strings.BooksRead} {MauiProgram.CurrentUser.BooksCount}";
     }
     
     #region Relay Commands

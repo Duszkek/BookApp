@@ -4,6 +4,7 @@
               xmlns:viewModel="clr-namespace:BookApp.ViewModels"
               xmlns:base="clr-namespace:BookApp.Base"
               xmlns:models="clr-namespace:BookApp.Models"
+              xmlns:res="clr-namespace:BookApp"
               x:DataType="viewModel:LoginViewModel"
               xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
               x:Class="BookApp.Views.LoginView"
@@ -25,7 +26,7 @@
         <!-- Page Header -->
         <Grid Grid.Row="0">
             <Label
-                Text="User Dashboard"
+                Text="{x:Static res:Strings.UserDashboard}"
                 Style="{StaticResource MainHeaderStyle}"/>
         </Grid>
 
@@ -53,7 +54,7 @@
                                         VerticalOptions="Start" 
                                         Grid.Row="0"/>
                                     <Label
-                                        Text="Username"
+                                        Text="{x:Static res:Strings.Username}"
                                         Style="{StaticResource SecondaryLabelStyle}"
                                         VerticalOptions="End" 
                                         Grid.Row="1"/>
@@ -67,7 +68,7 @@
                                         VerticalOptions="Start" 
                                         Grid.Row="0"/>
                                     <Label
-                                        Text="Books read"
+                                        Text="{x:Static res:Strings.BooksRead}"
                                         Style="{StaticResource SecondaryLabelStyle}"
                                         VerticalOptions="End"
                                         Grid.Row="1"/>
@@ -75,7 +76,7 @@
 
                                 <!-- Delete Button -->
                                 <Button
-                                    Text="Delete"
+                                    Text="{x:Static res:Strings.Delete}"
                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:LoginViewModel}}, Path=DeleteUserCommand}"
                                     CommandParameter="{Binding UserId}"
                                     Style="{StaticResource DeleteButtonCellStyle}"
@@ -103,7 +104,7 @@
         
         <!-- No User Message -->
         <Label
-            Text="No user available, please add a user in order to continue"
+            Text="{x:Static res:Strings.NoUserAvailableDisclaimer}"
             IsVisible="{Binding AnyUserIsVisible, Converter={StaticResource InverseBooleanConverter}}"
             Style="{StaticResource DisclaimerStyle}"
             FontAttributes="Italic"
@@ -111,7 +112,7 @@
 
         <!-- Add User Button -->
         <Button
-            Text="Add new user"
+            Text="{x:Static res:Strings.AddNewUser}"
             IsVisible="{Binding DeleteMode, Converter={StaticResource InverseBooleanConverter}}"
             Command="{Binding AddUserCommand}"
             Style="{StaticResource PrimaryButtonStyle}"
@@ -119,7 +120,7 @@
 
         <!-- Toggle Delete Mode Button -->
         <Button
-            Text="Toggle DELETE mode"
+            Text="{x:Static res:Strings.ToggleDeleteMode}"
             Command="{Binding ToggleDeleteModeCommand}"
             Style="{StaticResource DeleteButtonStyle}"
             IsVisible="{Binding AnyUserIsVisible}"

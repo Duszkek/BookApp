@@ -33,7 +33,7 @@ public class DTOMapper
                 .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.VolumeInfo.Title))
                 .ForMember(dest => dest.Authors, opt => opt.MapFrom(src => src.VolumeInfo.Authors != null 
                     ? string.Join(", ", src.VolumeInfo.Authors) 
-                    : "Unknown"))
+                    : Strings.Unknown))
                 .ForMember(dest => dest.PublishedDate, opt => opt.MapFrom(src => src.VolumeInfo.PublishedDate))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.VolumeInfo.Description))
                 .ForMember(dest => dest.Thumbnail, opt => opt.MapFrom(src => EnsureHttps(src.VolumeInfo.ImageLinks.Thumbnail)))
