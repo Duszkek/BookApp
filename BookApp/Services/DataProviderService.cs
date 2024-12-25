@@ -116,6 +116,16 @@ public class DataProviderService
         
         DbContext.Users.Remove(userToDelete);
         await DbContext.SaveChangesAsync();
+
+        List<Book> unassignedBooks = await DbContext.Books
+            .Where(book => !DbContext.UserReadBooks.Any(urb => urb.BookId == book.IdBook))
+            .ToListAsync();
+
+        if (unassignedBooks.Any())
+        {
+            DbContext.Books.RemoveRange(unassignedBooks);
+            await DbContext.SaveChangesAsync();
+        }
         
         return true;
     }
