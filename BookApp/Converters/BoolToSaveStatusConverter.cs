@@ -8,10 +8,10 @@ namespace BookApp.Converters
         {
             if (value is bool isSaved)
             {
-                return isSaved ? "Saved" : "Save";
+                return isSaved ? "Read" : "Unread";
             }
 
-            return "Save";
+            return "Unread";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

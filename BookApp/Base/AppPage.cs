@@ -19,6 +19,8 @@ public abstract class AppPage
     public AppPage(Intent intent)
     {
         Intent = intent;
+        NavigationPage.SetHasNavigationBar(this, false);
+        
     }
 
     #endregion

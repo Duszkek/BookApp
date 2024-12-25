@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using BookApp.Base;
 using BookApp.Entities;
 using BookApp.Enums;
 using BookApp.Models;
@@ -10,61 +11,35 @@ using CommunityToolkit.Mvvm.Input;
 namespace BookApp.ViewModels;
 
 public partial class SearchBooksListViewModel
-    : ObservableObject
+    : PaginationListViewModel
 {
-    #region Members
-    
-    private int CurrentPaginationIndex;
-    private bool StopLoadingData;
-    
-    #endregion
-    
-    #region Properties
-    
-    private Intent Intent { get; }
-    
-    public bool AnyBookIsVisible => BookList.Count > 0;
-    
-    public ObservableCollection<BookModel> BookList { get; set; } = [];
-    
-    public BookModel? SelectedItem { get; set; }
-
-    [ObservableProperty]
-    private bool isLoading;
-
-    [ObservableProperty]
-    private string titleQuery;
-    
-    [ObservableProperty]
-    private string authorQuery;
-
-    [ObservableProperty]
-    private bool listIsVisible;
-    
-    [ObservableProperty]
-    private string emptyListMessage;
-
-    [ObservableProperty]
-    private int booksFoundCounter;
-
-    [ObservableProperty]
-    private bool counterIsVisible;
-
-    #endregion
-    
     #region Ctor
 
     public SearchBooksListViewModel(Intent intent)
+        : base(intent)
     {
-        Intent = intent;
         EmptyListMessage = "Use the search function above to find your books";
     }
     
     #endregion
     
     #region Methods
+    
+    #region Override
 
-    public void Refresh()
+    public override async Task GetValueFromIntent(Intent intent)
+    {
+        if (Intent.HasValue(IntentName.ChangedBook))
+        {
+            BookModel bookChanged = Intent.GetAndPopValue<BookModel>(IntentName.ChangedBook);
+            if (bookChanged != null)
+            {
+                await SwitchState(bookChanged);
+            }
+        }
+    }
+
+    public override void Refresh()
     {
         CurrentPaginationIndex = 0;
         EmptyListMessage = "No elements found - change search parameters and try again";
@@ -72,7 +47,7 @@ public partial class SearchBooksListViewModel
         CounterIsVisible = false;
     }
     
-    public async Task ItemTapped(object selectedBook)
+    public override async Task ItemTapped(object selectedBook)
     {
         if (selectedBook is BookModel bookModel && BookList.Contains(bookModel))
         {
@@ -81,10 +56,31 @@ public partial class SearchBooksListViewModel
         }
     }
     
+    #endregion
+    
     #region RelayCommands
     
     [RelayCommand]
-    public async Task PerformSearch()
+    public async Task SwitchState(BookModel book)
+    {
+        if (!book.IsSaved)
+        {
+            await MauiProgram.DataProviderService.SaveBookLocallyForUserAsync(MauiProgram.CurrentUser.UserId, book);
+            BookList[BookList.IndexOf(book)].IsSaved = true;
+            MauiProgram.CurrentUser.BooksCount += 1;
+            return;
+        }
+        
+        await MauiProgram.DataProviderService.DeleteBookForUserAsync(MauiProgram.CurrentUser.UserId, book);
+        BookList[BookList.IndexOf(book)].IsSaved = false;
+        MauiProgram.CurrentUser.BooksCount -= 1;
+
+        OnPropertyChanged(nameof(BookList));
+    }
+    
+    #region Override
+    
+    public override async Task PerformSearch()
     {
         if (string.IsNullOrWhiteSpace(TitleQuery) && string.IsNullOrWhiteSpace(AuthorQuery))
         {
@@ -97,7 +93,7 @@ public partial class SearchBooksListViewModel
         OnPropertyChanged(nameof(ListIsVisible));
         
         IsLoading = true;
-        ApiResponseStruct apiResponseStruct = await MauiProgram.DataProviderService.SearchBooksAsync(TitleQuery, AuthorQuery, CurrentPaginationIndex);
+        ApiResponseStruct apiResponseStruct = await MauiProgram.DataProviderService.SearchBooksAsync(TitleQuery.Trim(), AuthorQuery.Trim(), CurrentPaginationIndex);
         CurrentPaginationIndex = apiResponseStruct.Books.Count;
         BooksFoundCounter = apiResponseStruct.ItemsFound;
         foreach (BookModel book in apiResponseStruct.Books)
@@ -121,8 +117,7 @@ public partial class SearchBooksListViewModel
         OnPropertyChanged(nameof(ListIsVisible));
     }
     
-    [RelayCommand]
-    public async Task LoadMoreBooks()
+    public override async Task LoadMoreBooks()
     {
         if (StopLoadingData)
         {
@@ -130,7 +125,7 @@ public partial class SearchBooksListViewModel
         }
         
         IsLoading = true;
-        ApiResponseStruct apiResponseStruct = await MauiProgram.DataProviderService.SearchBooksAsync(TitleQuery, AuthorQuery, CurrentPaginationIndex);
+        ApiResponseStruct apiResponseStruct = await MauiProgram.DataProviderService.SearchBooksAsync(TitleQuery.Trim(), AuthorQuery.Trim(), CurrentPaginationIndex);
         CurrentPaginationIndex += apiResponseStruct.Books.Count;
 
         if (apiResponseStruct.Books.Count < 40)
@@ -152,23 +147,8 @@ public partial class SearchBooksListViewModel
         IsLoading = false;
     }
     
-    [RelayCommand]
-    public async Task SwitchState(BookModel book)
-    {
-        if (!book.IsSaved)
-        {
-            await MauiProgram.DataProviderService.SaveBookLocallyForUserAsync(MauiProgram.CurrentUser.UserId, book);
-            BookList[BookList.IndexOf(book)].IsSaved = true;
-            MauiProgram.CurrentUser.BooksCount += 1;
-            return;
-        }
-        
-        await MauiProgram.DataProviderService.DeleteBookForUserAsync(MauiProgram.CurrentUser.UserId, book);
-        BookList[BookList.IndexOf(book)].IsSaved = false;
-        MauiProgram.CurrentUser.BooksCount -= 1;
-
-        OnPropertyChanged(nameof(BookList));
-    }
+    
+    #endregion
     
     #endregion
     

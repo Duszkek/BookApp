@@ -29,11 +29,23 @@ public partial class LoginView
 
     private async void UserListView_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection?.Count > 0)
+        if (e.CurrentSelection.Count == 0)
         {
-            await ViewModel?.ItemTapped(e.CurrentSelection.FirstOrDefault());
+            return;
         }
-
+        
+        if (Helper.IsInternetAvailable())
+        {
+            if (e.CurrentSelection?.Count > 0)
+            {
+                await ViewModel?.ItemTapped(e.CurrentSelection.FirstOrDefault());
+            }
+        }
+        else
+        {
+            await DisplayAlert("No Internet", "Internet connection is not available. Please check your connection and try again.", "OK");
+        }
+        
         if (sender is CollectionView userCollectionView)
         {
             userCollectionView.SelectedItem = null;

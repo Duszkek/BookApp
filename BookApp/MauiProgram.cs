@@ -3,6 +3,7 @@ using BookApp.Models;
 using BookApp.Services;
 using BookApp.ViewModels;
 using BookApp.Views;
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace BookApp;
@@ -21,6 +22,7 @@ public static class MauiProgram
         MauiAppBuilder builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .RegisterPages()
             .ConfigureFonts(fonts =>
             {
@@ -57,6 +59,10 @@ public static class MauiProgram
         
         builder.Services.AddSingleton<SearchReadBooksListView>();
         builder.Services.AddSingleton<SearchReadBooksListViewModel>();
+        
+        builder.Services.AddSingleton<BookDetailsView>();
+        builder.Services.AddSingleton<BookDetailsViewModel>();
+        
         return builder;
     }
 }

@@ -4,6 +4,7 @@ public enum IntentName
 {
     Unknown = 0,
     Main,
+    ChangedBook,
     NewUser,
     SelectedBook,
 }

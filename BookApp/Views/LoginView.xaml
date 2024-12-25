@@ -5,9 +5,14 @@
               xmlns:base="clr-namespace:BookApp.Base"
               xmlns:models="clr-namespace:BookApp.Models"
               x:DataType="viewModel:LoginViewModel"
+              xmlns:mct="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
               x:Class="BookApp.Views.LoginView"
               BackgroundColor="{StaticResource BackgroundColor}">
-
+    
+    <Page.Behaviors>
+        <mct:StatusBarBehavior StatusBarStyle="DarkContent" StatusBarColor="{StaticResource BackgroundColor}"></mct:StatusBarBehavior>
+    </Page.Behaviors>
+    
     <Grid Padding="20">
         
         <Grid.RowDefinitions>

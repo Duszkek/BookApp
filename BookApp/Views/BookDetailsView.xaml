@@ -1,0 +1,113 @@
+﻿<base:AppPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:viewModel="clr-namespace:BookApp.ViewModels"
+              xmlns:base="clr-namespace:BookApp.Base"
+              x:DataType="viewModel:BookDetailsViewModel"
+              x:Class="BookApp.Views.BookDetailsView"
+              BackgroundColor="{StaticResource BackgroundColor}">
+
+    <Grid Padding="20" RowDefinitions="Auto,Auto,*,Auto" ColumnDefinitions="Auto, *">
+        
+        <!-- Page Header -->
+        <Label
+            Grid.Row="0" Grid.ColumnSpan="2"
+            Text="Book Details"
+            Style="{StaticResource MainHeaderStyle}" />
+        
+        <!-- Book Data -->
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="15" RowSpacing="10">
+            
+            <!-- Thumbnail -->
+            <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="0"
+                    StrokeThickness="1" BackgroundColor="White" WidthRequest="120" HeightRequest="180" Margin="10">
+                <Grid>
+                    <Image
+                        Source="{Binding BookModel.Thumbnail}"
+                        IsVisible="{Binding BookModel.HasThumbnailImage}"
+                        Aspect="AspectFit" />
+                    <Label
+                        Text="Preview unavailable"
+                        Style="{StaticResource PhotoUnavailableLabelStyle}"
+                        IsVisible="{Binding BookModel.HasThumbnailImage, Converter={StaticResource InverseBooleanConverter}}" />
+                </Grid>
+            </Border>
+
+            <!-- Title -->
+            <Grid Grid.Row="0" Grid.Column="2" RowDefinitions="Auto, Auto">
+            <Label
+                Grid.Row="1"
+                Text="Title"
+                Style="{StaticResource SecondaryLabelStyle}" />
+            <Label
+                Grid.Row="0"
+                LineBreakMode="WordWrap"
+                Text="{Binding BookModel.Title}"
+                Style="{StaticResource ValueLabelStyle}" />
+            </Grid>
+
+            <!-- Authors -->
+            <Grid Grid.Row="1" Grid.Column="2" RowDefinitions="Auto, Auto">
+            <Label
+                Grid.Row="1"
+                Text="Authors"
+                Style="{StaticResource SecondaryLabelStyle}" />
+            <Label
+                Grid.Row="0"
+                Text="{Binding BookModel.Authors}"
+                Style="{StaticResource ValueLabelStyle}" />
+            </Grid>
+
+            <!-- Published Date -->
+            <Grid Grid.Row="2" Grid.Column="2" RowDefinitions="Auto, Auto">
+            <Label
+                Grid.Row="1"
+                Text="Published Date"
+                Style="{StaticResource SecondaryLabelStyle}" />
+            <Label
+                Grid.Row="0"
+                Text="{Binding BookModel.PublishedDate}"
+                Style="{StaticResource ValueLabelStyle}" />
+            </Grid>
+
+            <!-- Page Count -->
+            <Grid Grid.Row="3" Grid.Column="2" RowDefinitions="Auto, Auto">
+            <Label
+                Grid.Row="1"
+                Text="Page Count"
+                Style="{StaticResource SecondaryLabelStyle}" />
+            <Label
+                Grid.Row="0"
+                Text="{Binding BookModel.PageCount}"
+                Style="{StaticResource ValueLabelStyle}" />
+            </Grid>
+        </Grid>
+
+        <!-- Description -->
+        <Label
+            Grid.Row="2"
+            Grid.Column="1"
+            Text="Description"
+            Style="{StaticResource SecondaryLabelStyle}"/>
+        <ScrollView Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0, 0">
+            <Label
+                Text="{Binding BookModel.Description}"
+                Style="{StaticResource ValueLabelStyle}"
+                LineBreakMode="WordWrap" />
+        </ScrollView>
+
+        <!-- Action Buttons -->
+        <Grid Grid.Row="3" Grid.ColumnSpan="2" RowDefinitions="*,*">
+            <Button
+                Grid.Row="0"
+                IsVisible="{Binding StatusChanged}"
+                Text="Save"
+                Command="{Binding SaveCommand}"
+                Style="{StaticResource PrimaryButtonStyle}" />
+            <Button
+                Grid.Row="1"
+                Text="{Binding IsBookSavedCurrently, Converter={StaticResource BoolToSaveStatusConverter}, StringFormat='Book status: {0}'}"
+                Command="{Binding ChangeBookSaveStatusCommand}"
+                Style="{StaticResource DeleteButtonStyle}" />
+        </Grid>
+    </Grid>
+</base:AppPage>

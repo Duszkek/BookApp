@@ -5,8 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:BookApp.Views"
     Shell.FlyoutBehavior="Flyout"
+    Shell.NavBarIsVisible="False"
     Title="BookApp">
-
+    
     <ShellContent
         Title="{Binding PageTitle}"
         ContentTemplate="{DataTemplate local:LoginView}"

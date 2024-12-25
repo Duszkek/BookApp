@@ -5,6 +5,7 @@
                     xmlns:local="clr-namespace:BookApp"
                     xmlns:converters="clr-namespace:BookApp.Converters"
                     x:Class="BookApp.App">
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using BookApp.Base;
 using BookApp.Entities;
 using BookApp.Enums;
 using BookApp.Models;
@@ -10,45 +11,9 @@ using CommunityToolkit.Mvvm.Input;
 namespace BookApp.ViewModels;
 
 public partial class SearchReadBooksListViewModel
-    : ObservableObject
+    : PaginationListViewModel
 {
-    #region Members
-    
-    private int CurrentPaginationIndex;
-    private bool StopLoadingData;
-    
-    #endregion
-    
     #region Properties
-    
-    private Intent Intent { get; }
-    
-    public bool AnyBookIsVisible => BookList.Count > 0;
-    
-    public ObservableCollection<BookModel> BookList { get; set; } = [];
-    
-    public BookModel? SelectedItem { get; set; }
-
-    [ObservableProperty]
-    private bool isLoading;
-
-    [ObservableProperty]
-    private string titleQuery;
-    
-    [ObservableProperty]
-    private string authorQuery;
-
-    [ObservableProperty]
-    private bool listIsVisible;
-    
-    [ObservableProperty]
-    private string emptyListMessage;
-
-    [ObservableProperty]
-    private int booksFoundCounter;
-
-    [ObservableProperty]
-    private bool counterIsVisible;
 
     public int BooksReadCounter
     {
@@ -63,8 +28,8 @@ public partial class SearchReadBooksListViewModel
     #region Ctor
 
     public SearchReadBooksListViewModel(Intent intent)
+        :base(intent)
     {
-        Intent = intent;
         EmptyListMessage = "You have no read books saved! In order to add new books go to the book list menu, find your books and save them!";
     }
     
@@ -103,7 +68,9 @@ public partial class SearchReadBooksListViewModel
         OnPropertyChanged(nameof(ListIsVisible));
     }
     
-    public void Refresh()
+    #region Override
+    
+    public override void Refresh()
     {
         CurrentPaginationIndex = 0;
         EmptyListMessage = "No elements found - change search parameters and try again or add more books";
@@ -111,7 +78,7 @@ public partial class SearchReadBooksListViewModel
         CounterIsVisible = false;
     }
     
-    public async Task ItemTapped(object selectedBook)
+    public override async Task ItemTapped(object selectedBook)
     {
         if (selectedBook is BookModel bookModel && BookList.Contains(bookModel))
         {
@@ -120,10 +87,38 @@ public partial class SearchReadBooksListViewModel
         }
     }
     
+    public override async Task GetValueFromIntent(Intent intent)
+    {
+        if (Intent.HasValue(IntentName.ChangedBook))
+        {
+            BookModel bookChanged = Intent.GetAndPopValue<BookModel>(IntentName.ChangedBook);
+            if (bookChanged != null)
+            {
+                await DeleteBook(bookChanged);
+            }
+        }
+    }
+    
+    #endregion
+    
     #region RelayCommands
     
     [RelayCommand]
-    public async Task PerformSearch()
+    public async Task DeleteBook(BookModel book)
+    {
+        await MauiProgram.DataProviderService.DeleteBookForUserAsync(MauiProgram.CurrentUser.UserId, book);
+        int bookIndex = BookList.IndexOf(book);
+        BookList[bookIndex].IsSaved = false;
+        MauiProgram.CurrentUser.BooksCount -= 1;
+        BooksFoundCounter -= 1;
+        BookList.Remove(book);
+        OnPropertyChanged(nameof(BookList));
+        OnPropertyChanged(nameof(BooksReadCounter));
+    }
+
+    #region Override
+    
+        public override async Task PerformSearch()
     {
         Refresh();
 
@@ -132,7 +127,7 @@ public partial class SearchReadBooksListViewModel
         
         IsLoading = true;
         
-        DbResponseStruct dbResponseStruct = await MauiProgram.DataProviderService.GetBookModelListForUserAsync(MauiProgram.CurrentUser.UserId, TitleQuery, AuthorQuery, CurrentPaginationIndex);
+        DbResponseStruct dbResponseStruct = await MauiProgram.DataProviderService.GetBookModelListForUserAsync(MauiProgram.CurrentUser.UserId, TitleQuery.Trim(), AuthorQuery.Trim(), CurrentPaginationIndex);
         BooksFoundCounter = dbResponseStruct.ItemsFound;
         if (dbResponseStruct.Books.Count < Constants.MaxApiResults)
         {
@@ -156,8 +151,7 @@ public partial class SearchReadBooksListViewModel
         OnPropertyChanged(nameof(ListIsVisible));
     }
     
-    [RelayCommand]
-    public async Task LoadMoreBooks()
+    public override async Task LoadMoreBooks()
     {
         if (StopLoadingData)
         {
@@ -165,7 +159,7 @@ public partial class SearchReadBooksListViewModel
         }
         
         IsLoading = true;
-        DbResponseStruct dbResponseStruct = await MauiProgram.DataProviderService.GetBookModelListForUserAsync(MauiProgram.CurrentUser.UserId, TitleQuery, AuthorQuery, CurrentPaginationIndex);
+        DbResponseStruct dbResponseStruct = await MauiProgram.DataProviderService.GetBookModelListForUserAsync(MauiProgram.CurrentUser.UserId, TitleQuery.Trim(), AuthorQuery.Trim(), CurrentPaginationIndex);
         BooksFoundCounter = dbResponseStruct.ItemsFound;
 
         CurrentPaginationIndex += dbResponseStruct.Books.Count;
@@ -185,19 +179,9 @@ public partial class SearchReadBooksListViewModel
         IsLoading = false;
     }
     
-    [RelayCommand]
-    public async Task DeleteBook(BookModel book)
-    {
-        await MauiProgram.DataProviderService.DeleteBookForUserAsync(MauiProgram.CurrentUser.UserId, book);
-        int bookIndex = BookList.IndexOf(book);
-        BookList[bookIndex].IsSaved = false;
-        MauiProgram.CurrentUser.BooksCount -= 1;
-        BooksFoundCounter -= 1;
-        BookList.Remove(book);
-        OnPropertyChanged(nameof(BookList));
-        OnPropertyChanged(nameof(BooksReadCounter));
-    }
-
+    
+    #endregion
+    
     #endregion
     
     #endregion

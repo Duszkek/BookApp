@@ -33,8 +33,19 @@ public partial class SearchBooksListView
     
     #region Methods
 
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await ViewModel?.GetValueFromIntent(Intent);
+    }
+    
     private async void SearchBooksList_OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
+        if (e.CurrentSelection.Count == 0)
+        {
+            return;
+        }
+        
         if (e.CurrentSelection?.Count > 0)
         {
             await ViewModel?.ItemTapped(e.CurrentSelection.FirstOrDefault());

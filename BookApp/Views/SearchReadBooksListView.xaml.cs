@@ -54,6 +54,8 @@ public partial class SearchReadBooksListView
             await ViewModel?.LoadDataAsync();
             IsLoaded = true;
         }
+        
+        await ViewModel?.GetValueFromIntent(Intent);
     }
     
     private void Entry_OnCompleted(object? sender, EventArgs e)
